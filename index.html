@@ -25,11 +25,13 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button onclick="productCount('phn',false)" class="btn btn-default"><i
+                                 class="fas fa-minus"></i></button>
+                           <input id="phn-quantity" type="text" class="form-control text-center" value="1">
+                           <button onclick="productCount('phn',true)" class="btn btn-default"><i
+                                 class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5 id="phn-price">$1219</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +45,14 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button onclick="productCount('case',false)" class="btn btn-default"><i
+                                 class="fas fa-minus"></i></button>
+                           <input id="case-quantity" type="text" class="form-control text-center" value="1">
+                           <button onclick="productCount('case',true)" class="btn btn-default"><i
+                                 class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5 id="case-price">$59</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +68,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5 id="sub-total">$1,278</h5>
+                        <h5 id="tax-amount"> $0</h5>
+                        <h5 id="grandTotal">$1,278</h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +81,157 @@
          </div>
       </div>
    </section>
+   <script>
+      //STEP-4
+      //Merging phnCount & caseCount function
+
+      function productCount(product, isIncrease) {
+         // const pdctInput = document.getElementById(product + "-quantity")
+         // const pdctQuantity = parseInt(pdctInput.value)
+
+         //Shortcut of upper two lines
+         const pdctQuantity = getInputValue(product)
+         let pdctNewQuantity = pdctQuantity
+         if (isIncrease == true) {
+            pdctNewQuantity = pdctQuantity + 1
+         }
+         if (isIncrease == false && pdctQuantity > 0) {
+            pdctNewQuantity = pdctQuantity - 1
+         }
+         document.getElementById(product + "-quantity").value = pdctNewQuantity
+         if (product == "phn") {
+            productTotal = pdctNewQuantity * 1219
+         }
+         if (product == "case") {
+            productTotal = pdctNewQuantity * 59
+         }
+         // const totalPrice = pdctNewQuantity * 59
+         document.getElementById(product + "-price").innerText = "$" + productTotal
+
+         calculateTotal()
+      }
+
+      function calculateTotal() {
+         /* const phoneInput = document.getElementById("phn-quantity")
+         const phoneCount = parseInt(phoneInput.value)
+
+         const caseInput = document.getElementById("case-quantity")
+         const caseCount = parseInt(caseInput.value) */
+
+         // const caseCount = getInputValue('case')
+         // const phnCount = getInputValue('phn')
+
+         const totalPrice = getInputValue('phn') * 1219 + getInputValue('case') * 59
+         document.getElementById("sub-total").innerText = '$' + totalPrice
+
+         let tax = totalPrice * 0.02
+         document.getElementById('tax-amount').innerText = '$' + tax.toFixed(2)
+
+         const grandTotal = totalPrice + tax
+         document.getElementById('grandTotal').innerText = '$' + grandTotal.toFixed(2)
+      }
+
+      function getInputValue(product) {
+         const productInput = document.getElementById(product + '-quantity')
+         const productCount = parseInt(productInput.value)
+         return productCount
+      }
+
+      //STEP-3
+      //Adding onclick function
+
+      /* function phnCount(isIncrease) {
+         const phnInput = document.getElementById("phn-quantity")
+         const phnQuantity = parseInt(phnInput.value)
+         let phnNewQuantity = phnQuantity
+         if (isIncrease == true) {
+            phnNewQuantity = phnQuantity + 1
+         }
+         if (isIncrease == false && phnQuantity > 0) {
+            phnNewQuantity = phnQuantity - 1
+         }
+         phnInput.value = phnNewQuantity
+         const totalPrice = phnNewQuantity * 1219
+         document.getElementById("phn-price").innerText = "$" + totalPrice
+      }
+
+      function caseCount(isIncrease) {
+         const caseInput = document.getElementById("case-quantity")
+         const caseQuantity = parseInt(caseInput.value)
+         let caseNewQuantity = caseQuantity
+         if (isIncrease == true) {
+            caseNewQuantity = caseQuantity + 1
+         }
+         if (isIncrease == false && caseQuantity > 0) {
+            caseNewQuantity = caseQuantity - 1
+         }
+         caseInput.value = caseNewQuantity
+         const totalPrice = caseNewQuantity * 59
+         document.getElementById("case-price").innerText = "$" + totalPrice
+      } */
+
+      //STEP-2
+
+      //For Case Add-Sub Operation
+      /* document.getElementById("case-add").addEventListener('click', function () {
+         countProduct(true)
+      })
+      document.getElementById("case-sub").addEventListener('click', function () {
+         countProduct(false)
+      })
+
+      function countProduct(isIncrease) {
+         const caseInput = document.getElementById("case-quantity")
+         const caseQuantity = parseInt(caseInput.value)
+         let caseNewQuantity = caseQuantity
+         if (isIncrease == true) {
+            caseNewQuantity = caseQuantity + 1
+         }
+         if (isIncrease == false && caseQuantity > 0) {
+            caseNewQuantity = caseQuantity - 1
+         }
+         caseInput.value = caseNewQuantity
+         const totalPrice = caseNewQuantity * 59
+         document.getElementById("case-price").innerText = "$" + totalPrice
+      } */
+
+      // STEP-1
+      /* document.getElementById("case-add").addEventListener('click', function () {
+         const caseInput = document.getElementById("case-quantity")
+         const caseQuantity = parseInt(caseInput.value)
+         const caseNewQuantity = caseQuantity + 1
+         caseInput.value = caseNewQuantity
+         const totalPrice = caseNewQuantity * 59
+         document.getElementById("case-price").innerText = "$" + totalPrice
+      })
+      document.getElementById("case-sub").addEventListener('click', function () {
+         const caseInput = document.getElementById("case-quantity")
+         const caseQuantity = parseInt(caseInput.value)
+         const caseNewQuantity = caseQuantity - 1
+         caseInput.value = caseNewQuantity
+         const totalPrice = caseNewQuantity * 59
+         document.getElementById("case-price").innerText = "$" + totalPrice
+
+      })
+
+      document.getElementById("phn-add").addEventListener('click', function () {
+         const phnInput = document.getElementById("phn-quantity")
+         const phnQuantity = parseInt(phnInput.value)
+         const phnNewQuantity = phnQuantity + 1
+         phnInput.value = phnNewQuantity
+         const totalPrice = phnNewQuantity * 1219
+         document.getElementById("phn-price").innerText = "$" + totalPrice
+      })
+      document.getElementById("phn-sub").addEventListener('click', function () {
+         const phnInput = document.getElementById("phn-quantity")
+         const phnQuantity = parseInt(phnInput.value)
+         const phnNewQuantity = phnQuantity - 1
+         phnInput.value = phnNewQuantity
+         const totalPrice = phnNewQuantity * 1219
+         document.getElementById("phn-price").innerText = "$" + totalPrice
+
+      }) */
+   </script>
 </body>
 
 </html>
